@@ -83,15 +83,7 @@ const TECHNOLOGIES = [
 
 export default function App() {
   return (
-    <div id="top" style={{ position: 'relative', minHeight: '100vh', backgroundColor: 'var(--background)' }}>
-      {/* Living Ambient Gradient Background Layer */}
-      <div className="living-ambient-canvas" aria-hidden="true">
-        <div className="ambient-orb ambient-orb-1" />
-        <div className="ambient-orb ambient-orb-2" />
-        <div className="ambient-orb ambient-orb-3" />
-        <div className="ambient-glow-core" />
-      </div>
-
+    <div id="top" style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#000000' }}>
       {/* Fixed Navbar */}
       <Navbar />
 
@@ -101,22 +93,22 @@ export default function App() {
           style={{
             position: 'relative',
             display: 'flex',
-            minHeight: '100svh',
+            minHeight: '78svh',
             alignItems: 'center',
             overflow: 'hidden',
-            paddingTop: '8rem',
-            paddingBottom: '5rem',
+            paddingTop: '5.5rem',
+            paddingBottom: '3rem',
           }}
         >
           {/* 3D Floating Knot Sculpture in Hero */}
           <div
             style={{
               position: 'absolute',
-              right: '-10%',
+              right: '-8%',
               top: '50%',
               transform: 'translateY(-50%)',
-              width: 'clamp(22rem, 50vw, 46rem)',
-              height: 'clamp(22rem, 50vw, 46rem)',
+              width: 'clamp(18rem, 42vw, 36rem)',
+              height: 'clamp(18rem, 42vw, 36rem)',
               opacity: 0.95,
               pointerEvents: 'none',
               zIndex: 1,
@@ -130,7 +122,7 @@ export default function App() {
               AI Automation · Web Development · Digital Systems
             </p>
 
-            <h1 className="display-xl" style={{ marginTop: '2rem', maxWidth: '56rem' }}>
+            <h1 className="display-xl" style={{ marginTop: '1.25rem', maxWidth: '56rem' }}>
               WE BUILD
               <br />
               DIGITAL SYSTEMS
@@ -142,19 +134,19 @@ export default function App() {
 
             <div
               style={{
-                marginTop: '3.5rem',
+                marginTop: '2.25rem',
                 display: 'flex',
                 flexWrap: 'wrap',
                 alignItems: 'flex-end',
                 justifyContent: 'space-between',
-                gap: '2.5rem',
+                gap: '2rem',
               }}
             >
               <p
                 style={{
                   maxWidth: '28rem',
-                  fontSize: '1.05rem',
-                  lineHeight: 1.65,
+                  fontSize: '1rem',
+                  lineHeight: 1.6,
                   color: 'var(--muted-foreground)',
                 }}
               >
@@ -180,8 +172,8 @@ export default function App() {
           id="about"
           style={{
             borderTop: '1px solid var(--border)',
-            paddingTop: '8rem',
-            paddingBottom: '11rem',
+            paddingTop: '4.5rem',
+            paddingBottom: '5rem',
           }}
         >
           <div className="site-container">
@@ -192,10 +184,10 @@ export default function App() {
             </h2>
             <p
               style={{
-                marginTop: '4rem',
+                marginTop: '2.25rem',
                 maxWidth: '36rem',
-                fontSize: '1.05rem',
-                lineHeight: 1.65,
+                fontSize: '1rem',
+                lineHeight: 1.6,
                 color: 'var(--muted-foreground)',
                 marginLeft: 'auto',
               }}
@@ -210,14 +202,14 @@ export default function App() {
           id="services"
           style={{
             borderTop: '1px solid var(--border)',
-            paddingTop: '6rem',
-            paddingBottom: '9rem',
+            paddingTop: '4rem',
+            paddingBottom: '4.5rem',
           }}
         >
           <div className="site-container">
             <p className="eyebrow">What we build</p>
 
-            <div style={{ marginTop: '3.5rem', borderTop: '1px solid var(--border)' }}>
+            <div style={{ marginTop: '2rem', borderTop: '1px solid var(--border)' }}>
               {SERVICES.map((s) => (
                 <a key={s.n} href="#discovery" className="service-row">
                   <span className="service-num">{s.n}</span>
@@ -236,17 +228,17 @@ export default function App() {
             position: 'relative',
             overflow: 'hidden',
             borderTop: '1px solid var(--border)',
-            paddingTop: '8rem',
-            paddingBottom: '11rem',
+            paddingTop: '4.5rem',
+            paddingBottom: '5rem',
           }}
         >
           <div
             className="site-container"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
               alignItems: 'center',
-              gap: '4rem',
+              gap: '3rem',
             }}
           >
             <div>
@@ -255,17 +247,17 @@ export default function App() {
                 <br />
                 SURFACE.
               </h2>
-              <h2 className="display-lg" style={{ marginTop: '1.5rem', color: 'var(--muted-foreground)' }}>
+              <h2 className="display-lg" style={{ marginTop: '1rem', color: 'var(--muted-foreground)' }}>
                 WE BUILD WHAT'S
                 <br />
                 UNDERNEATH IT.
               </h2>
               <p
                 style={{
-                  marginTop: '3rem',
+                  marginTop: '1.75rem',
                   maxWidth: '28rem',
-                  fontSize: '1.05rem',
-                  lineHeight: 1.65,
+                  fontSize: '1rem',
+                  lineHeight: 1.6,
                   color: 'var(--muted-foreground)',
                 }}
               >
@@ -273,7 +265,7 @@ export default function App() {
               </p>
             </div>
 
-            <div style={{ height: 'clamp(20rem, 35vw, 32rem)', position: 'relative' }}>
+            <div style={{ height: 'clamp(14rem, 24vw, 22rem)', position: 'relative' }}>
               <Sculpture shape="ring" speed={0.7} />
             </div>
           </div>
@@ -283,8 +275,8 @@ export default function App() {
         <section
           style={{
             borderTop: '1px solid var(--border)',
-            paddingTop: '6rem',
-            paddingBottom: '9rem',
+            paddingTop: '3.75rem',
+            paddingBottom: '4.5rem',
           }}
         >
           <div className="site-container">
@@ -306,8 +298,8 @@ export default function App() {
           id="process"
           style={{
             borderTop: '1px solid var(--border)',
-            paddingTop: '6rem',
-            paddingBottom: '9rem',
+            paddingTop: '3.75rem',
+            paddingBottom: '4.5rem',
           }}
         >
           <div className="site-container">
@@ -325,24 +317,26 @@ export default function App() {
           </div>
         </section>
 
-        {/* FULLSCREEN IMPACT STATEMENT (CAPSULE 3D) */}
+        {/* IMPACT STATEMENT (CAPSULE 3D) */}
         <section
           style={{
             position: 'relative',
             display: 'flex',
-            minHeight: '100svh',
+            minHeight: '56vh',
             alignItems: 'center',
             overflow: 'hidden',
             borderTop: '1px solid var(--border)',
+            paddingTop: '4.5rem',
+            paddingBottom: '4.5rem',
           }}
         >
-          {/* Radial dark glow */}
+          {/* Subtle localized glow behind 3D Capsule */}
           <div
             style={{
               pointerEvents: 'none',
               position: 'absolute',
               inset: 0,
-              background: 'radial-gradient(50% 50% at 50% 50%, rgba(40, 40, 45, 0.45) 0%, transparent 75%)',
+              background: 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, rgba(130, 130, 180, 0.02) 40%, transparent 70%)',
             }}
           />
 
@@ -354,8 +348,8 @@ export default function App() {
               left: '50%',
               top: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 'clamp(20rem, 50vw, 42rem)',
-              height: 'clamp(20rem, 50vw, 42rem)',
+              width: 'clamp(16rem, 36vw, 30rem)',
+              height: 'clamp(16rem, 36vw, 30rem)',
               opacity: 0.65,
             }}
           >
@@ -370,7 +364,7 @@ export default function App() {
               <br />
               THAN EXIST.
             </h2>
-            <p className="display-lg" style={{ marginTop: '2.5rem', color: 'var(--muted-foreground)' }}>
+            <p className="display-lg" style={{ marginTop: '1.5rem', color: 'var(--muted-foreground)' }}>
               IT SHOULD WORK.
             </p>
           </div>
@@ -380,22 +374,22 @@ export default function App() {
         <section
           style={{
             borderTop: '1px solid var(--border)',
-            paddingTop: '6rem',
-            paddingBottom: '8rem',
+            paddingTop: '3.5rem',
+            paddingBottom: '4rem',
           }}
         >
           <div className="site-container">
-            <h2 style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.75rem)', letterSpacing: '-0.02em', fontWeight: 500 }}>
+            <h2 style={{ fontSize: 'clamp(1.2rem, 2.2vw, 1.6rem)', letterSpacing: '-0.02em', fontWeight: 500 }}>
               BUILT WITH MODERN TECHNOLOGY.
             </h2>
 
             <ul
               style={{
-                marginTop: '3rem',
+                marginTop: '1.75rem',
                 display: 'flex',
                 flexWrap: 'wrap',
-                columnGap: '2.5rem',
-                rowGap: '1.25rem',
+                columnGap: '2rem',
+                rowGap: '1rem',
                 listStyle: 'none',
               }}
             >
@@ -415,8 +409,8 @@ export default function App() {
         <section
           style={{
             borderTop: '1px solid var(--border)',
-            paddingTop: '8rem',
-            paddingBottom: '11rem',
+            paddingTop: '4.5rem',
+            paddingBottom: '5.5rem',
           }}
         >
           <div className="site-container">
@@ -428,15 +422,15 @@ export default function App() {
 
             <div
               style={{
-                marginTop: '3rem',
+                marginTop: '2rem',
                 display: 'flex',
                 flexWrap: 'wrap',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                gap: '2rem',
+                gap: '1.5rem',
               }}
             >
-              <p style={{ fontSize: '1.05rem', color: 'var(--muted-foreground)' }}>
+              <p style={{ fontSize: '1rem', color: 'var(--muted-foreground)' }}>
                 Let's talk about what your business needs.
               </p>
               <a href="#discovery" className="btn-primary">
@@ -449,13 +443,13 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <footer style={{ position: 'relative', zIndex: 1, borderTop: '1px solid var(--border)', paddingTop: '4rem', paddingBottom: '4rem' }}>
+      <footer style={{ position: 'relative', zIndex: 1, borderTop: '1px solid var(--border)', paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
         <div className="site-container">
           <div
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '3rem',
+              gap: '2rem',
             }}
           >
             <div>

@@ -120,18 +120,18 @@ export default function DiscoveryForm() {
         position: 'relative',
         overflow: 'hidden',
         borderTop: '1px solid var(--border)',
-        paddingTop: '7rem',
-        paddingBottom: '10rem',
+        paddingTop: '4.5rem',
+        paddingBottom: '5rem',
       }}
     >
       {/* 3D Orb in background */}
       <div
         style={{
           position: 'absolute',
-          right: '-8rem',
-          top: '2.5rem',
-          width: '420px',
-          height: '420px',
+          right: '-6rem',
+          top: '2rem',
+          width: '340px',
+          height: '340px',
           opacity: 0.35,
           pointerEvents: 'none',
         }}
@@ -144,45 +144,45 @@ export default function DiscoveryForm() {
         style={{
           position: 'relative',
           display: 'grid',
-          gap: '4rem',
+          gap: '2.5rem',
         }}
       >
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '4rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '3rem',
             alignItems: 'start',
           }}
         >
           {/* Left Column: Heading & Info */}
           <div>
             <p className="eyebrow">Discovery Call</p>
-            <h2 className="display-lg" style={{ marginTop: '1.5rem' }}>
+            <h2 className="display-lg" style={{ marginTop: '1.25rem' }}>
               LET'S BUILD
               <br />
               SOMETHING USEFUL.
             </h2>
             <p
               style={{
-                marginTop: '2rem',
+                marginTop: '1.5rem',
                 maxWidth: '28rem',
                 fontSize: '1rem',
-                lineHeight: 1.65,
+                lineHeight: 1.6,
                 color: 'var(--muted-foreground)',
               }}
             >
               Tell us a little about your business and what you're looking to build. We'll get back to you and figure out whether MindWorks is the right fit.
             </p>
 
-            <div className="hairline" style={{ marginTop: '3rem', paddingTop: '1.5rem' }}>
-              <p style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>Prefer email?</p>
+            <div className="hairline" style={{ marginTop: '2rem', paddingTop: '1.25rem' }}>
+              <p style={{ fontSize: '0.85rem', color: 'var(--muted-foreground)' }}>Prefer email?</p>
               <a
                 href="mailto:mindworks.ai.tech@gmail.com"
                 style={{
                   display: 'inline-block',
-                  marginTop: '0.5rem',
-                  fontSize: '1rem',
+                  marginTop: '0.35rem',
+                  fontSize: '0.95rem',
                   color: 'var(--foreground)',
                   textDecoration: 'none',
                   borderBottom: '1px solid var(--border-strong)',
@@ -252,8 +252,8 @@ export default function DiscoveryForm() {
                 noValidate
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                  gap: '2.5rem',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                  gap: '1.75rem',
                 }}
               >
                 {/* Name */}
