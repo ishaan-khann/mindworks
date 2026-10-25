@@ -2,14 +2,73 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 /**
- * 3D Glass & Chrome Sculpture Component
- * Features:
- * - High-refraction obsidian glass with physical clearcoat (MeshPhysicalMaterial)
- * - Studio softbox lightformers compiled into HDR PMREM environment map
- * - Real-time animated glass reflections (environmentRotation animation)
- * - Subtle cursor parallax interaction
- * - Knot (Hero), Ring (Surface), Capsule (Impact), and Orb (Discovery)
+ * Creates a high-fidelity studio environment map with softbox lightformers.
+ * Generates the signature curved white glass/liquid-chrome reflections
+ * matching MindWorks exactly.
  */
+function createStudioEnvironmentTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  // Deep studio background tone with subtle vertical gradient
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, 512);
+  bgGrad.addColorStop(0, '#1c1c22');
+  bgGrad.addColorStop(0.5, '#0e0e12');
+  bgGrad.addColorStop(1, '#18181e');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, 1024, 512);
+
+  // 1. Main Overhead Softbox (broad top illumination)
+  const topGrad = ctx.createLinearGradient(280, 20, 740, 160);
+  topGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+  topGrad.addColorStop(0.2, 'rgba(255, 255, 255, 0.95)');
+  topGrad.addColorStop(0.5, 'rgba(255, 255, 255, 1)');
+  topGrad.addColorStop(0.8, 'rgba(255, 255, 255, 0.95)');
+  topGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  ctx.fillStyle = topGrad;
+  ctx.beginPath();
+  ctx.roundRect(260, 20, 500, 150, 30);
+  ctx.fill();
+
+  // 2. Left Signature Rim/Strip Softbox (produces the signature tubular curve reflection)
+  const leftGrad = ctx.createLinearGradient(80, 100, 220, 420);
+  leftGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+  leftGrad.addColorStop(0.15, 'rgba(255, 255, 255, 0.98)');
+  leftGrad.addColorStop(0.5, 'rgba(240, 248, 255, 0.92)');
+  leftGrad.addColorStop(0.85, 'rgba(255, 255, 255, 0.98)');
+  leftGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  ctx.fillStyle = leftGrad;
+  ctx.beginPath();
+  ctx.roundRect(70, 90, 160, 330, 25);
+  ctx.fill();
+
+  // 3. Right Rim Softbox (sharp contour rim reflection)
+  const rightGrad = ctx.createLinearGradient(790, 120, 960, 400);
+  rightGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+  rightGrad.addColorStop(0.25, 'rgba(230, 240, 255, 0.9)');
+  rightGrad.addColorStop(0.75, 'rgba(255, 255, 255, 0.95)');
+  rightGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  ctx.fillStyle = rightGrad;
+  ctx.beginPath();
+  ctx.roundRect(780, 110, 170, 300, 20);
+  ctx.fill();
+
+  // 4. Center-bottom subtle floor bounce
+  const botGrad = ctx.createRadialGradient(512, 480, 20, 512, 480, 280);
+  botGrad.addColorStop(0, 'rgba(180, 190, 210, 0.55)');
+  botGrad.addColorStop(0.6, 'rgba(100, 110, 130, 0.25)');
+  botGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = botGrad;
+  ctx.fillRect(200, 360, 624, 150);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.mapping = THREE.EquirectangularReflectionMapping;
+  texture.needsUpdate = true;
+  return texture;
+}
+
 export default function Sculpture({ shape = 'knot', speed = 1, className = '' }) {
   const containerRef = useRef(null);
 
@@ -19,16 +78,16 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // 1. Scene Setup
+    // Scene
     const scene = new THREE.Scene();
 
-    // 2. Camera Setup
+    // Camera
     const width = container.clientWidth || 300;
     const height = container.clientHeight || 300;
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 0, 6);
 
-    // 3. Renderer with tone mapping
+    // Renderer
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
@@ -37,74 +96,15 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.3;
     renderer.domElement.className = 'sculpture-canvas';
     container.appendChild(renderer.domElement);
 
-    // 4. Studio Environment Map with Precision Lightformers
-    // Recreates the studio softbox setup matching MindWorks / Lovable
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileCubemapShader();
+    // Studio Environment Texture with Glass Reflections
+    const envTexture = createStudioEnvironmentTexture();
+    scene.environment = envTexture;
 
-    const envScene = new THREE.Scene();
-
-    // Softbox 1: Overhead main key light (broad white highlight)
-    const topGeo = new THREE.PlaneGeometry(12, 7);
-    const topMat = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      side: THREE.DoubleSide,
-      toneMapped: false,
-    });
-    topMat.color.multiplyScalar(16);
-    const topMesh = new THREE.Mesh(topGeo, topMat);
-    topMesh.position.set(0, 6, 2.5);
-    topMesh.rotation.x = Math.PI / 2;
-    envScene.add(topMesh);
-
-    // Softbox 2: Curved front-left strip (creates the sweeping white rim streak)
-    const stripGeo1 = new THREE.PlaneGeometry(24, 2.5);
-    const stripMat1 = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      side: THREE.DoubleSide,
-      toneMapped: false,
-    });
-    stripMat1.color.multiplyScalar(10);
-    const stripMesh1 = new THREE.Mesh(stripGeo1, stripMat1);
-    stripMesh1.position.set(-6, 1.5, -2);
-    stripMesh1.rotation.y = Math.PI / 2;
-    envScene.add(stripMesh1);
-
-    // Softbox 3: Side-right secondary fill strip
-    const stripGeo2 = new THREE.PlaneGeometry(22, 2);
-    const stripMat2 = new THREE.MeshBasicMaterial({
-      color: 0xcccccc,
-      side: THREE.DoubleSide,
-      toneMapped: false,
-    });
-    stripMat2.color.multiplyScalar(5);
-    const stripMesh2 = new THREE.Mesh(stripGeo2, stripMat2);
-    stripMesh2.position.set(6, -2, 1.5);
-    stripMesh2.rotation.y = -Math.PI / 2;
-    envScene.add(stripMesh2);
-
-    // Softbox 4: Bottom specular kicker
-    const botGeo = new THREE.PlaneGeometry(14, 6);
-    const botMat = new THREE.MeshBasicMaterial({
-      color: 0x666666,
-      side: THREE.DoubleSide,
-      toneMapped: false,
-    });
-    botMat.color.multiplyScalar(2.5);
-    const botMesh = new THREE.Mesh(botGeo, botMat);
-    botMesh.position.set(0, -6, -3);
-    botMesh.rotation.x = -Math.PI / 2;
-    envScene.add(botMesh);
-
-    // Generate environment texture
-    const envRenderTarget = pmremGenerator.fromScene(envScene, 0.04);
-    scene.environment = envRenderTarget.texture;
-
-    // 5. Geometry
+    // Geometry
     let geometry;
     switch (shape) {
       case 'ring':
@@ -122,35 +122,37 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
         break;
     }
 
-    // 6. Obsidian Liquid Glass & Physical Clearcoat Material
+    // Liquid Obsidian Glass with Physical Clearcoat
     const material = new THREE.MeshPhysicalMaterial({
-      color: 0x141416,
-      metalness: 0.94,
-      roughness: 0.04,
+      color: 0x1c1c20,
+      metalness: 0.88,
+      roughness: 0.05,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.02,
-      ior: 1.5,
+      clearcoatRoughness: 0.025,
       reflectivity: 1.0,
-      envMapIntensity: 3.2,
-      toneMapped: true,
+      envMapIntensity: 2.8,
     });
 
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    // 7. Dynamic Direct Lights for extra specular pop
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
+    // Dynamic Studio Lighting for specular pops
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x222226, 1.4);
+    scene.add(hemiLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 3.5);
-    dirLight1.position.set(5, 8, 6);
-    scene.add(dirLight1);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    keyLight.position.set(5, 7, 5);
+    scene.add(keyLight);
 
-    const dirLight2 = new THREE.DirectionalLight(0xffffff, 1.8);
-    dirLight2.position.set(-6, -4, -3);
-    scene.add(dirLight2);
+    const rimLight = new THREE.DirectionalLight(0xffffff, 2.4);
+    rimLight.position.set(-6, -3, 3);
+    scene.add(rimLight);
 
-    // 8. Mouse parallax tracking
+    const topFill = new THREE.DirectionalLight(0xffffff, 1.8);
+    topFill.position.set(0, 8, -2);
+    scene.add(topFill);
+
+    // Mouse parallax tracking
     let targetMouseX = 0;
     let targetMouseY = 0;
     let currentMouseX = 0;
@@ -160,13 +162,13 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
       const rect = container.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      targetMouseX = x * 0.4;
-      targetMouseY = y * 0.4;
+      targetMouseX = x * 0.35;
+      targetMouseY = y * 0.35;
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // 9. Animation Loop with animated glass reflection sweeps
+    // Animation Loop
     let animationFrameId;
     let lastTime = performance.now();
     let isVisible = true;
@@ -190,23 +192,21 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
       lastTime = currentTime;
 
       if (!prefersReducedMotion) {
-        // Smooth mouse damping
         currentMouseX += (targetMouseX - currentMouseX) * 0.05;
         currentMouseY += (targetMouseY - currentMouseY) * 0.05;
 
-        // Rotation & floating animation
+        // Mesh rotation & oscillation
         mesh.rotation.y += delta * 0.22 * speed;
         mesh.rotation.x += delta * 0.08 * speed;
         mesh.position.y = Math.sin(currentTime * 0.001 * 0.8) * 0.12;
 
-        mesh.rotation.z = currentMouseX * 0.3;
-        mesh.position.x = currentMouseX * 0.2;
+        mesh.rotation.z = currentMouseX * 0.25;
+        mesh.position.x = currentMouseX * 0.18;
 
-        // Animated Glass Reflection: Environment light rotates and shimmers dynamically across the surface!
+        // Dynamic Glass Reflection Sweeps: environment shimmers and rotates across the glass surface
         if (scene.environmentRotation) {
-          scene.environmentRotation.y += delta * 0.18 * speed;
-          scene.environmentRotation.x = Math.sin(currentTime * 0.0006) * 0.15;
-          scene.environmentRotation.z = Math.cos(currentTime * 0.0008) * 0.08;
+          scene.environmentRotation.y += delta * 0.16 * speed;
+          scene.environmentRotation.x = Math.sin(currentTime * 0.0007) * 0.12;
         }
       }
 
@@ -215,7 +215,7 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
 
     animationFrameId = requestAnimationFrame(animate);
 
-    // 10. Resize handler
+    // Resize handler
     const handleResize = () => {
       if (!container) return;
       const newWidth = container.clientWidth;
@@ -229,7 +229,7 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
 
     window.addEventListener('resize', handleResize);
 
-    // 11. Cleanup
+    // Cleanup
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
@@ -242,16 +242,7 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
 
       geometry.dispose();
       material.dispose();
-      topGeo.dispose();
-      topMat.dispose();
-      stripGeo1.dispose();
-      stripMat1.dispose();
-      stripGeo2.dispose();
-      stripMat2.dispose();
-      botGeo.dispose();
-      botMat.dispose();
-      envRenderTarget.dispose();
-      pmremGenerator.dispose();
+      envTexture.dispose();
       renderer.dispose();
     };
   }, [shape, speed]);

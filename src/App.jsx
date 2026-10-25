@@ -93,22 +93,22 @@ export default function App() {
           style={{
             position: 'relative',
             display: 'flex',
-            minHeight: '78svh',
+            minHeight: 'calc(100svh - 1rem)',
             alignItems: 'center',
             overflow: 'hidden',
-            paddingTop: '5.5rem',
-            paddingBottom: '3rem',
+            paddingTop: '4.75rem',
+            paddingBottom: '1.5rem',
           }}
         >
           {/* 3D Floating Knot Sculpture in Hero */}
           <div
             style={{
               position: 'absolute',
-              right: '-8%',
+              right: '-6%',
               top: '50%',
               transform: 'translateY(-50%)',
-              width: 'clamp(18rem, 42vw, 36rem)',
-              height: 'clamp(18rem, 42vw, 36rem)',
+              width: 'clamp(18rem, 36vw, 32rem)',
+              height: 'clamp(18rem, 36vw, 32rem)',
               opacity: 0.95,
               pointerEvents: 'none',
               zIndex: 1,
@@ -118,11 +118,7 @@ export default function App() {
           </div>
 
           <div className="site-container" style={{ position: 'relative', width: '100%', zIndex: 2 }}>
-            <p className="eyebrow">
-              AI Automation · Web Development · Digital Systems
-            </p>
-
-            <h1 className="display-xl" style={{ marginTop: '1.25rem', maxWidth: '56rem' }}>
+            <h1 className="display-xl" style={{ marginTop: '0', maxWidth: '54rem' }}>
               WE BUILD
               <br />
               DIGITAL SYSTEMS
@@ -134,26 +130,26 @@ export default function App() {
 
             <div
               style={{
-                marginTop: '2.25rem',
+                marginTop: '1.5rem',
                 display: 'flex',
                 flexWrap: 'wrap',
                 alignItems: 'flex-end',
                 justifyContent: 'space-between',
-                gap: '2rem',
+                gap: '1.5rem',
               }}
             >
               <p
                 style={{
                   maxWidth: '28rem',
-                  fontSize: '1rem',
-                  lineHeight: 1.6,
+                  fontSize: '0.975rem',
+                  lineHeight: 1.55,
                   color: 'var(--muted-foreground)',
                 }}
               >
                 AI automation, intelligent web experiences and custom digital systems designed to help businesses operate better and grow faster.
               </p>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.875rem' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
                 <a href="#discovery" className="btn-primary">
                   Book a Discovery Call
                   <span className="arrow">→</span>

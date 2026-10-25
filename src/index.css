@@ -63,10 +63,10 @@ body {
 
 /* Typography Scale */
 .display-xl {
-  font-size: clamp(2.5rem, 8vw, 7.8rem);
+  font-size: clamp(2.2rem, 5.2vw, 5.5rem);
   font-weight: 500;
   line-height: 0.94;
-  letter-spacing: -0.038em;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
