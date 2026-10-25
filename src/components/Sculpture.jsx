@@ -2,12 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 /**
- * 3D Interactive Sculpture Component
- * Replicates the original MindWorks 3D geometric sculptures:
- * - 'knot' (Hero)
- * - 'ring' (Surface vs Underneath)
- * - 'capsule' (Your Website Should Do More Than Exist)
- * - 'orb' (Discovery Call background)
+ * 3D Glass & Chrome Sculpture Component
+ * Features:
+ * - High-refraction obsidian glass with physical clearcoat (MeshPhysicalMaterial)
+ * - Studio softbox lightformers compiled into HDR PMREM environment map
+ * - Real-time animated glass reflections (environmentRotation animation)
+ * - Subtle cursor parallax interaction
+ * - Knot (Hero), Ring (Surface), Capsule (Impact), and Orb (Discovery)
  */
 export default function Sculpture({ shape = 'knot', speed = 1, className = '' }) {
   const containerRef = useRef(null);
@@ -16,19 +17,18 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
     const container = containerRef.current;
     if (!container) return;
 
-    // Check prefers-reduced-motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Scene setup
+    // 1. Scene Setup
     const scene = new THREE.Scene();
 
-    // Camera setup
+    // 2. Camera Setup
     const width = container.clientWidth || 300;
     const height = container.clientHeight || 300;
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 0, 6);
 
-    // Renderer
+    // 3. Renderer with tone mapping
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
@@ -37,11 +37,74 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.35;
     renderer.domElement.className = 'sculpture-canvas';
     container.appendChild(renderer.domElement);
 
-    // Geometry based on shape
+    // 4. Studio Environment Map with Precision Lightformers
+    // Recreates the studio softbox setup matching MindWorks / Lovable
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    pmremGenerator.compileCubemapShader();
+
+    const envScene = new THREE.Scene();
+
+    // Softbox 1: Overhead main key light (broad white highlight)
+    const topGeo = new THREE.PlaneGeometry(12, 7);
+    const topMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    topMat.color.multiplyScalar(16);
+    const topMesh = new THREE.Mesh(topGeo, topMat);
+    topMesh.position.set(0, 6, 2.5);
+    topMesh.rotation.x = Math.PI / 2;
+    envScene.add(topMesh);
+
+    // Softbox 2: Curved front-left strip (creates the sweeping white rim streak)
+    const stripGeo1 = new THREE.PlaneGeometry(24, 2.5);
+    const stripMat1 = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    stripMat1.color.multiplyScalar(10);
+    const stripMesh1 = new THREE.Mesh(stripGeo1, stripMat1);
+    stripMesh1.position.set(-6, 1.5, -2);
+    stripMesh1.rotation.y = Math.PI / 2;
+    envScene.add(stripMesh1);
+
+    // Softbox 3: Side-right secondary fill strip
+    const stripGeo2 = new THREE.PlaneGeometry(22, 2);
+    const stripMat2 = new THREE.MeshBasicMaterial({
+      color: 0xcccccc,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    stripMat2.color.multiplyScalar(5);
+    const stripMesh2 = new THREE.Mesh(stripGeo2, stripMat2);
+    stripMesh2.position.set(6, -2, 1.5);
+    stripMesh2.rotation.y = -Math.PI / 2;
+    envScene.add(stripMesh2);
+
+    // Softbox 4: Bottom specular kicker
+    const botGeo = new THREE.PlaneGeometry(14, 6);
+    const botMat = new THREE.MeshBasicMaterial({
+      color: 0x666666,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    botMat.color.multiplyScalar(2.5);
+    const botMesh = new THREE.Mesh(botGeo, botMat);
+    botMesh.position.set(0, -6, -3);
+    botMesh.rotation.x = -Math.PI / 2;
+    envScene.add(botMesh);
+
+    // Generate environment texture
+    const envRenderTarget = pmremGenerator.fromScene(envScene, 0.04);
+    scene.environment = envRenderTarget.texture;
+
+    // 5. Geometry
     let geometry;
     switch (shape) {
       case 'ring':
@@ -59,39 +122,55 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
         break;
     }
 
-    // Material - Sleek, dark chrome/metallic finish with sharp specular highlights
-    const material = new THREE.MeshStandardMaterial({
-      color: 0x18181b,
-      metalness: 0.95,
-      roughness: 0.08,
-      wireframe: false,
+    // 6. Obsidian Liquid Glass & Physical Clearcoat Material
+    const material = new THREE.MeshPhysicalMaterial({
+      color: 0x141416,
+      metalness: 0.94,
+      roughness: 0.04,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      ior: 1.5,
+      reflectivity: 1.0,
+      envMapIntensity: 3.2,
+      toneMapped: true,
     });
 
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    // Lighting setup for dynamic highlights on dark metallic surfaces
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    // 7. Dynamic Direct Lights for extra specular pop
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.5);
-    dirLight1.position.set(5, 7, 5);
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 3.5);
+    dirLight1.position.set(5, 8, 6);
     scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0xffffff, 1.2);
-    dirLight2.position.set(-5, -4, -3);
+    const dirLight2 = new THREE.DirectionalLight(0xffffff, 1.8);
+    dirLight2.position.set(-6, -4, -3);
     scene.add(dirLight2);
 
-    const pointLight = new THREE.PointLight(0xffffff, 3.5, 20);
-    pointLight.position.set(0, 4, 3);
-    scene.add(pointLight);
+    // 8. Mouse parallax tracking
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+    let currentMouseX = 0;
+    let currentMouseY = 0;
 
-    // Animation loop
+    const handleMouseMove = (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      targetMouseX = x * 0.4;
+      targetMouseY = y * 0.4;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    // 9. Animation Loop with animated glass reflection sweeps
     let animationFrameId;
     let lastTime = performance.now();
     let isVisible = true;
 
-    // Intersection observer to only render when in viewport
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -111,9 +190,24 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
       lastTime = currentTime;
 
       if (!prefersReducedMotion) {
+        // Smooth mouse damping
+        currentMouseX += (targetMouseX - currentMouseX) * 0.05;
+        currentMouseY += (targetMouseY - currentMouseY) * 0.05;
+
+        // Rotation & floating animation
         mesh.rotation.y += delta * 0.22 * speed;
         mesh.rotation.x += delta * 0.08 * speed;
         mesh.position.y = Math.sin(currentTime * 0.001 * 0.8) * 0.12;
+
+        mesh.rotation.z = currentMouseX * 0.3;
+        mesh.position.x = currentMouseX * 0.2;
+
+        // Animated Glass Reflection: Environment light rotates and shimmers dynamically across the surface!
+        if (scene.environmentRotation) {
+          scene.environmentRotation.y += delta * 0.18 * speed;
+          scene.environmentRotation.x = Math.sin(currentTime * 0.0006) * 0.15;
+          scene.environmentRotation.z = Math.cos(currentTime * 0.0008) * 0.08;
+        }
       }
 
       renderer.render(scene, camera);
@@ -121,7 +215,7 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
 
     animationFrameId = requestAnimationFrame(animate);
 
-    // Resize handler
+    // 10. Resize handler
     const handleResize = () => {
       if (!container) return;
       const newWidth = container.clientWidth;
@@ -135,8 +229,9 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
 
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
+    // 11. Cleanup
     return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
       observer.disconnect();
@@ -147,6 +242,16 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
 
       geometry.dispose();
       material.dispose();
+      topGeo.dispose();
+      topMat.dispose();
+      stripGeo1.dispose();
+      stripMat1.dispose();
+      stripGeo2.dispose();
+      stripMat2.dispose();
+      botGeo.dispose();
+      botMat.dispose();
+      envRenderTarget.dispose();
+      pmremGenerator.dispose();
       renderer.dispose();
     };
   }, [shape, speed]);
