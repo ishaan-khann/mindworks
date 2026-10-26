@@ -6,23 +6,23 @@ import DiscoveryForm from './components/DiscoveryForm';
 const SERVICES = [
   {
     n: '01',
-    t: 'AI AUTOMATION',
-    d: 'Automate repetitive processes, connect your tools and build intelligent workflows that save your team time.',
+    t: 'AI WORKFLOW AUTOMATION',
+    d: 'As an AI automation agency, we connect your tools and design AI workflows that reduce repetitive work and fit your real operations.',
   },
   {
     n: '02',
-    t: 'AI AGENTS',
-    d: 'Build AI-powered agents that can communicate with customers, answer questions, qualify leads and execute business workflows.',
+    t: 'AI AGENTS & CHATBOTS',
+    d: 'Build AI agents and AI chatbots that answer customer questions, qualify leads, support teams and take action across business workflows.',
   },
   {
     n: '03',
-    t: 'WEB EXPERIENCES',
-    d: 'High-performance websites designed to communicate your value, build trust and convert visitors into customers.',
+    t: 'WEB DESIGN',
+    d: 'Our web design agency creates fast, responsive business websites that communicate your value, build trust and turn visitors into enquiries.',
   },
   {
     n: '04',
     t: 'WEB APPLICATIONS',
-    d: 'Custom platforms, dashboards, internal tools and SaaS applications designed specifically around your business.',
+    d: 'Custom web development for platforms, dashboards, internal tools and SaaS products shaped around how your business works.',
   },
 ];
 
@@ -166,7 +166,7 @@ export default function App() {
                   color: 'var(--muted-foreground)',
                 }}
               >
-                AI automation, intelligent web experiences and custom digital systems designed to help businesses operate better and grow faster.
+                MindWorks is an AI agency building AI workflow automation, AI agents and chatbots, web design, and custom web applications for businesses.
               </p>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
@@ -234,6 +234,36 @@ export default function App() {
                   <span className="service-arrow">→</span>
                 </a>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="service-faq-heading"
+          style={{
+            borderTop: '1px solid var(--border)',
+            paddingTop: '3.75rem',
+            paddingBottom: '4.5rem',
+          }}
+        >
+          <div className="site-container">
+            <p className="eyebrow">AI and web services</p>
+            <h2 id="service-faq-heading" className="display-lg" style={{ marginTop: '1rem' }}>
+              PRACTICAL ANSWERS. USEFUL SYSTEMS.
+            </h2>
+            <div style={{ display: 'grid', gap: '1.5rem', marginTop: '2rem', maxWidth: '52rem' }}>
+              <div>
+                <h3 className="pillar-title">What does an AI agency build?</h3>
+                <p className="pillar-desc">An AI agency can design AI workflows, connect business software, and build agents or chatbots for tasks such as customer support, lead qualification and internal knowledge search. MindWorks scopes each system around the process it needs to improve.</p>
+              </div>
+              <div>
+                <h3 className="pillar-title">Can AI agents and chatbots connect to business workflows?</h3>
+                <p className="pillar-desc">Yes. AI agents and chatbots can be integrated with approved data sources and business tools so they can answer questions, route requests or trigger defined workflow steps, with appropriate review and safeguards.</p>
+              </div>
+              <div>
+                <h3 className="pillar-title">Does MindWorks provide web design and development?</h3>
+                <p className="pillar-desc">MindWorks designs and develops business websites and custom web applications, from responsive marketing sites to dashboards, internal platforms and SaaS products.</p>
+              </div>
             </div>
           </div>
         </section>
