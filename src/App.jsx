@@ -588,10 +588,16 @@ export default function App() {
               </a>
 
               <div style={{ marginTop: '0.75rem', display: 'flex', gap: '1.25rem' }}>
-                {['LinkedIn', 'Instagram', 'X'].map((social) => (
+                {[
+                  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/mindworksai/' },
+                  { label: 'Instagram', href: 'https://www.instagram.com/mindworks.ai/' },
+                  { label: 'X', href: 'https://x.com/mindworks_ai' },
+                ].map((social) => (
                   <a
-                    key={social}
-                    href="#top"
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       color: 'var(--muted-foreground)',
                       textDecoration: 'none',
@@ -600,7 +606,7 @@ export default function App() {
                     onMouseOver={(e) => (e.currentTarget.style.color = 'var(--foreground)')}
                     onMouseOut={(e) => (e.currentTarget.style.color = 'var(--muted-foreground)')}
                   >
-                    {social}
+                    {social.label}
                   </a>
                 ))}
               </div>
