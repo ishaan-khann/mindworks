@@ -42,6 +42,7 @@ export default function DiscoveryForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [leadRecord, setLeadRecord] = useState(null);
+  const [submitError, setSubmitError] = useState('');
 
   const validate = () => {
     const newErrors = {};
@@ -82,6 +83,7 @@ export default function DiscoveryForm() {
     }
 
     setErrors({});
+    setSubmitError('');
     setIsSubmitting(true);
 
     const submissionPayload = {
@@ -91,25 +93,22 @@ export default function DiscoveryForm() {
     };
 
     try {
-      // 1. Try submitting to Node/Express backend endpoint
       const response = await fetch('/api/discovery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(submissionPayload),
       });
 
-      if (!response.ok) {
-        throw new Error('Server returned non-200');
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'We could not send your request. Please try again.');
       }
-    } catch {
-      // 2. Fallback / client persistence catch: saves in localStorage so leads are never lost!
-      const existing = JSON.parse(localStorage.getItem('mindworks_leads') || '[]');
-      existing.unshift(submissionPayload);
-      localStorage.setItem('mindworks_leads', JSON.stringify(existing));
-    } finally {
-      setIsSubmitting(false);
       setSubmitted(true);
       setLeadRecord(submissionPayload);
+    } catch (error) {
+      setSubmitError(error.message || 'We could not send your request. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -407,6 +406,7 @@ export default function DiscoveryForm() {
 
                 {/* Submit button */}
                 <div style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>
+                  {submitError && <p className="form-error" role="alert">{submitError}</p>}
                   <button type="submit" className="btn-primary" disabled={isSubmitting}>
                     {isSubmitting ? 'Sending Request...' : 'Request a Discovery Call'}
                     <span className="arrow">→</span>
