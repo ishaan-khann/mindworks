@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Sculpture from './components/Sculpture';
 import DiscoveryForm from './components/DiscoveryForm';
 import { FaInstagram, FaLinkedin, FaXTwitter } from 'react-icons/fa6';
+import { RiOpenaiFill } from 'react-icons/ri';
 
 const SERVICES = [
   {
@@ -465,14 +466,18 @@ export default function App() {
                   onMouseEnter={e => e.currentTarget.style.opacity = '1'}
                   onMouseLeave={e => e.currentTarget.style.opacity = '0.75'}
                 >
-                  <img
-                    src={`https://cdn.simpleicons.org/${tech.slug}/${tech.color.replace('#', '')}`}
-                    alt={tech.name}
-                    width={22}
-                    height={22}
-                    style={{ display: 'block', flexShrink: 0 }}
-                    loading="lazy"
-                  />
+                  {tech.slug === 'openai' ? (
+                    <RiOpenaiFill aria-hidden="true" focusable="false" color={tech.color} size={22} />
+                  ) : (
+                    <img
+                      src={`https://cdn.simpleicons.org/${tech.slug}/${tech.color.replace('#', '')}`}
+                      alt={tech.name}
+                      width={22}
+                      height={22}
+                      style={{ display: 'block', flexShrink: 0 }}
+                      loading="lazy"
+                    />
+                  )}
                   <span
                     style={{
                       fontSize: '0.9rem',
