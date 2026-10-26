@@ -10,21 +10,25 @@ const SERVICES = [
     n: '01',
     t: 'AI WORKFLOW AUTOMATION',
     d: 'As an AI automation agency, we connect your tools and design AI workflows that reduce repetitive work and fit your real operations.',
+    href: '/services/ai-workflow-automation/',
   },
   {
     n: '02',
     t: 'AI AGENTS & CHATBOTS',
     d: 'Build AI agents and AI chatbots that answer customer questions, qualify leads, support teams and take action across business workflows.',
+    href: '/services/ai-agents-chatbots/',
   },
   {
     n: '03',
     t: 'WEB DESIGN',
     d: 'Our web design agency creates fast, responsive business websites that communicate your value, build trust and turn visitors into enquiries.',
+    href: '/services/web-design/',
   },
   {
     n: '04',
     t: 'WEB APPLICATIONS',
     d: 'Custom web development for platforms, dashboards, internal tools and SaaS products shaped around how your business works.',
+    href: '/services/web-development/',
   },
 ];
 
@@ -229,7 +233,7 @@ export default function App() {
 
             <div style={{ marginTop: '2rem', borderTop: '1px solid var(--border)' }}>
               {SERVICES.map((s) => (
-                <a key={s.n} href="#discovery" className="service-row">
+                <a key={s.n} href={s.href} className="service-row">
                   <span className="service-num">{s.n}</span>
                   <h3 className="service-title">{s.t}</h3>
                   <p className="service-desc">{s.d}</p>
