@@ -168,7 +168,7 @@ export default function App() {
                   color: 'var(--muted-foreground)',
                 }}
               >
-                MindWorks is an AI agency building AI workflow automation, AI agents and chatbots, web design, and custom web applications for businesses.
+                MindWorks AI is an AI agency building AI workflow automation, AI agents and chatbots, web design, and custom web applications for businesses.
               </p>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
@@ -548,7 +548,7 @@ export default function App() {
             <div>
               <p style={{ fontSize: '0.95rem', fontWeight: 600, letterSpacing: '-0.02em' }}>MindWorks</p>
               <p style={{ marginTop: '0.75rem', maxWidth: '16rem', fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>
-                AI Systems. Digital Experiences. Built Differently.
+                MindWorks AI: AI systems and digital experiences, built differently.
               </p>
             </div>
 
