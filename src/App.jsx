@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import Sculpture from './components/Sculpture';
 import DiscoveryForm from './components/DiscoveryForm';
+import { FaInstagram, FaLinkedin, FaXTwitter } from 'react-icons/fa6';
 
 const SERVICES = [
   {
@@ -589,9 +590,9 @@ export default function App() {
 
               <div style={{ marginTop: '0.75rem', display: 'flex', gap: '1.25rem' }}>
                 {[
-                  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/mindworksai/', icon: 'linkedin', color: '0A66C2' },
-                  { label: 'Instagram', href: 'https://www.instagram.com/mindworks.ai/', icon: 'instagram', color: 'E4405F' },
-                  { label: 'X', href: 'https://x.com/mindworks_ai', icon: 'x', color: 'FFFFFF' },
+                  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/mindworksai/', Icon: FaLinkedin, color: '#0A66C2' },
+                  { label: 'Instagram', href: 'https://www.instagram.com/mindworks.ai/', Icon: FaInstagram, color: '#E4405F' },
+                  { label: 'X', href: 'https://x.com/mindworks_ai', Icon: FaXTwitter, color: '#FFFFFF' },
                 ].map((social) => (
                   <a
                     key={social.label}
@@ -609,15 +610,7 @@ export default function App() {
                     onMouseOver={(e) => (e.currentTarget.style.color = 'var(--foreground)')}
                     onMouseOut={(e) => (e.currentTarget.style.color = 'var(--muted-foreground)')}
                   >
-                    <img
-                      src={`https://cdn.simpleicons.org/${social.icon}/${social.color}`}
-                      alt=""
-                      aria-hidden="true"
-                      width="16"
-                      height="16"
-                      loading="lazy"
-                      style={{ display: 'block', width: '1rem', height: '1rem' }}
-                    />
+                    <social.Icon aria-hidden="true" focusable="false" color={social.color} size="1rem" />
                     {social.label}
                   </a>
                 ))}
