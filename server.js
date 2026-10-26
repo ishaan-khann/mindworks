@@ -3,12 +3,24 @@ import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import nodemailer from 'nodemailer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+
+// Nodemailer transporter for Gmail SMTP
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'khanishaan846@gmail.com',
+    pass: 'iqxhgwnxpbzojnba',
+  },
+});
 
 // Middlewares
 app.use(cors());
@@ -95,6 +107,21 @@ app.post('/api/discovery', (req, res) => {
 
   console.log(`[MindWorks Discovery] New lead captured from ${submission.name} (${submission.email}) at ${submission.company}`);
 
+  // Send notification email
+  const mailOptions = {
+    from: 'khanishaan846@gmail.com',
+    to: 'khanishaan846@gmail.com', // adjust if you want a different recipient
+    subject: `New Discovery Lead: ${submission.name}`,
+    text: `You have a new discovery call submission:\n\nName: ${submission.name}\nEmail: ${submission.email}\nCompany: ${submission.company}\nWebsite: ${submission.website}\nScope: ${submission.scope}\nDetails: ${submission.details}\nBudget: ${submission.budget}\nTimeline: ${submission.timeline}\n\nSubmission ID: ${submission.id}\nCreated At: ${submission.createdAt}`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending discovery email:', error);
+    } else {
+      console.log('Discovery email sent:', info.response);
+    }
+  });
+
   return res.status(201).json({
     success: true,
     message: "Request received. We'll be in touch shortly.",
@@ -116,9 +143,7 @@ app.get('/api/discovery', (req, res) => {
 const distDir = path.join(__dirname, 'dist');
 if (fs.existsSync(distDir)) {
   app.use(express.static(distDir));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(distDir, 'index.html'));
-  });
+
 }
 
 app.listen(PORT, () => {

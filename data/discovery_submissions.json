@@ -1,5 +1,57 @@
 [
   {
+    "id": "mw_mvp0bcgecnva",
+    "name": "ishaan",
+    "email": "you@company.com",
+    "company": "mind",
+    "website": "mindworks.ai",
+    "scope": "AI Automation",
+    "details": "nothing",
+    "budget": "$3,000 – $5,000",
+    "timeline": "ASAP",
+    "status": "new",
+    "createdAt": "2026-10-26T08:40:46.286Z"
+  },
+  {
+    "id": "mw_mvogbi0e7gkf",
+    "name": "Ishaan Khan",
+    "email": "khanishaan84@gmail.com",
+    "company": "mindworks",
+    "website": "http://127.0.0.1:5000/login",
+    "scope": "Web Application",
+    "details": "nothing",
+    "budget": "Under $1,000",
+    "timeline": "ASAP",
+    "status": "new",
+    "createdAt": "2026-10-25T23:21:01.166Z"
+  },
+  {
+    "id": "mw_mvog9sennz5y",
+    "name": "Ishaan Khan",
+    "email": "khanishaan846@gmail.com",
+    "company": "mindworks",
+    "website": "http://127.0.0.1:5000/login",
+    "scope": "AI Automation",
+    "details": "nothing",
+    "budget": "$1,000 – $3,000",
+    "timeline": "Within 1 month",
+    "status": "new",
+    "createdAt": "2026-10-25T23:19:41.327Z"
+  },
+  {
+    "id": "mw_mvofpki4ub4b",
+    "name": "ishaan",
+    "email": "you@company.com",
+    "company": "mind",
+    "website": "mindworks.ai",
+    "scope": "AI Automation",
+    "details": "cdcddc",
+    "budget": "Under $1,000",
+    "timeline": "1–3 months",
+    "status": "new",
+    "createdAt": "2026-10-25T23:03:57.964Z"
+  },
+  {
     "id": "mw_mvoeud1zckcq",
     "name": "Alex Morgan",
     "email": "alex@example.com",

@@ -60,6 +60,49 @@ function discoveryApiPlugin() {
               list.unshift(submission);
               fs.writeFileSync(dataFile, JSON.stringify(list, null, 2), 'utf8');
 
+              console.log(`[MindWorks] New lead: ${submission.name} (${submission.email}) — ${submission.company}`);
+
+              // Send email notification via nodemailer
+              import('nodemailer').then((nodemailerModule) => {
+                const nodemailer = nodemailerModule.default;
+                const transporter = nodemailer.createTransport({
+                  host: 'smtp.gmail.com',
+                  port: 465,
+                  secure: true,
+                  auth: {
+                    user: 'khanishaan846@gmail.com',
+                    pass: 'iqxhgwnxpbzojnba',
+                  },
+                });
+
+                const mailOptions = {
+                  from: '"MindWorks Leads" <khanishaan846@gmail.com>',
+                  to: 'khanishaan846@gmail.com',
+                  subject: `🚀 New Discovery Lead: ${submission.name} — ${submission.company}`,
+                  html: `
+                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #f4f4f6; padding: 32px; border-radius: 12px; border: 1px solid #222;">
+                      <h2 style="margin: 0 0 8px; font-size: 22px; letter-spacing: -0.02em; color: #fff;">📩 New Discovery Call Request</h2>
+                      <p style="margin: 0 0 24px; color: #888; font-size: 13px;">Submitted via mindworks.ai</p>
+                      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #888; width: 130px;">Name</td><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #f4f4f6;">${submission.name}</td></tr>
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #888;">Email</td><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a;"><a href="mailto:${submission.email}" style="color: #a78bfa; text-decoration: none;">${submission.email}</a></td></tr>
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #888;">Company</td><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #f4f4f6;">${submission.company}</td></tr>
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #888;">Website</td><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #f4f4f6;">${submission.website || '—'}</td></tr>
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #888;">Scope</td><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #f4f4f6;">${submission.scope}</td></tr>
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #888;">Budget</td><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #f4f4f6;">${submission.budget}</td></tr>
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #888;">Timeline</td><td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #f4f4f6;">${submission.timeline}</td></tr>
+                        <tr><td style="padding: 10px 0; color: #888; vertical-align: top;">Details</td><td style="padding: 10px 0; color: #f4f4f6; line-height: 1.6;">${submission.details}</td></tr>
+                      </table>
+                      <p style="margin-top: 32px; font-size: 11px; color: #444;">Submission ID: ${submission.id} · ${submission.createdAt}</p>
+                    </div>
+                  `,
+                };
+
+                transporter.sendMail(mailOptions)
+                  .then(info => console.log('[MindWorks] ✅ Email sent:', info.response))
+                  .catch(err => console.error('[MindWorks] ❌ Email error:', err.message));
+              }).catch(err => console.error('[MindWorks] nodemailer import error:', err.message));
+
               res.statusCode = 201;
               res.setHeader('Content-Type', 'application/json');
               res.end(

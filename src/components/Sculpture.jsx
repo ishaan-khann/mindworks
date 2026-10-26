@@ -12,56 +12,66 @@ function createStudioEnvironmentTexture() {
   canvas.height = 512;
   const ctx = canvas.getContext('2d');
 
-  // Deep studio background tone with subtle vertical gradient
-  const bgGrad = ctx.createLinearGradient(0, 0, 0, 512);
-  bgGrad.addColorStop(0, '#1c1c22');
-  bgGrad.addColorStop(0.5, '#0e0e12');
-  bgGrad.addColorStop(1, '#18181e');
-  ctx.fillStyle = bgGrad;
+  // Black void background
+  ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, 1024, 512);
 
-  // 1. Main Overhead Softbox (broad top illumination)
-  const topGrad = ctx.createLinearGradient(280, 20, 740, 160);
-  topGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-  topGrad.addColorStop(0.2, 'rgba(255, 255, 255, 0.95)');
-  topGrad.addColorStop(0.5, 'rgba(255, 255, 255, 1)');
-  topGrad.addColorStop(0.8, 'rgba(255, 255, 255, 0.95)');
-  topGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  // === Multiple distinct light panels so glass picks up vivid sweeping reflections ===
+
+  // 1. Broad top softbox — main crown highlight
+  const topGrad = ctx.createLinearGradient(250, 0, 750, 90);
+  topGrad.addColorStop(0,   'rgba(255,255,255,0)');
+  topGrad.addColorStop(0.2, 'rgba(255,255,255,0.92)');
+  topGrad.addColorStop(0.5, 'rgba(255,255,255,1)');
+  topGrad.addColorStop(0.8, 'rgba(255,255,255,0.92)');
+  topGrad.addColorStop(1,   'rgba(255,255,255,0)');
   ctx.fillStyle = topGrad;
   ctx.beginPath();
-  ctx.roundRect(260, 20, 500, 150, 30);
+  ctx.roundRect(230, 2, 560, 90, 18);
   ctx.fill();
 
-  // 2. Left Signature Rim/Strip Softbox (produces the signature tubular curve reflection)
-  const leftGrad = ctx.createLinearGradient(80, 100, 220, 420);
-  leftGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-  leftGrad.addColorStop(0.15, 'rgba(255, 255, 255, 0.98)');
-  leftGrad.addColorStop(0.5, 'rgba(240, 248, 255, 0.92)');
-  leftGrad.addColorStop(0.85, 'rgba(255, 255, 255, 0.98)');
-  leftGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  // 2. Left tall strip — produces the signature tubular rim reflection
+  const leftGrad = ctx.createLinearGradient(70, 80, 180, 430);
+  leftGrad.addColorStop(0,    'rgba(255,255,255,0)');
+  leftGrad.addColorStop(0.15, 'rgba(200,220,255,0.88)');
+  leftGrad.addColorStop(0.5,  'rgba(255,255,255,0.95)');
+  leftGrad.addColorStop(0.85, 'rgba(200,220,255,0.88)');
+  leftGrad.addColorStop(1,    'rgba(255,255,255,0)');
   ctx.fillStyle = leftGrad;
   ctx.beginPath();
-  ctx.roundRect(70, 90, 160, 330, 25);
+  ctx.roundRect(68, 75, 110, 360, 20);
   ctx.fill();
 
-  // 3. Right Rim Softbox (sharp contour rim reflection)
-  const rightGrad = ctx.createLinearGradient(790, 120, 960, 400);
-  rightGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-  rightGrad.addColorStop(0.25, 'rgba(230, 240, 255, 0.9)');
-  rightGrad.addColorStop(0.75, 'rgba(255, 255, 255, 0.95)');
-  rightGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  // 3. Right strip — gives opposing glass edge catch
+  const rightGrad = ctx.createLinearGradient(845, 100, 950, 390);
+  rightGrad.addColorStop(0,    'rgba(255,255,255,0)');
+  rightGrad.addColorStop(0.3,  'rgba(220,235,255,0.80)');
+  rightGrad.addColorStop(0.7,  'rgba(255,255,255,0.88)');
+  rightGrad.addColorStop(1,    'rgba(255,255,255,0)');
   ctx.fillStyle = rightGrad;
   ctx.beginPath();
-  ctx.roundRect(780, 110, 170, 300, 20);
+  ctx.roundRect(840, 90, 100, 310, 16);
   ctx.fill();
 
-  // 4. Center-bottom subtle floor bounce
-  const botGrad = ctx.createRadialGradient(512, 480, 20, 512, 480, 280);
-  botGrad.addColorStop(0, 'rgba(180, 190, 210, 0.55)');
-  botGrad.addColorStop(0.6, 'rgba(100, 110, 130, 0.25)');
-  botGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  // 4. Diagonal slash — gives an angled swoosh reflection as the knot rotates
+  ctx.save();
+  ctx.translate(512, 256);
+  ctx.rotate(-0.38);
+  const slashGrad = ctx.createLinearGradient(-260, -20, 260, 20);
+  slashGrad.addColorStop(0,   'rgba(255,255,255,0)');
+  slashGrad.addColorStop(0.4, 'rgba(180,200,255,0.35)');
+  slashGrad.addColorStop(0.6, 'rgba(220,235,255,0.55)');
+  slashGrad.addColorStop(1,   'rgba(255,255,255,0)');
+  ctx.fillStyle = slashGrad;
+  ctx.fillRect(-300, -28, 600, 56);
+  ctx.restore();
+
+  // 5. Soft bottom bounce so underside isn't completely dead
+  const botGrad = ctx.createRadialGradient(512, 485, 10, 512, 485, 200);
+  botGrad.addColorStop(0, 'rgba(160,180,220,0.22)');
+  botGrad.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = botGrad;
-  ctx.fillRect(200, 360, 624, 150);
+  ctx.fillRect(260, 390, 500, 120);
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -96,7 +106,7 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.toneMappingExposure = 1.1;
     renderer.domElement.className = 'sculpture-canvas';
     container.appendChild(renderer.domElement);
 
@@ -122,35 +132,49 @@ export default function Sculpture({ shape = 'knot', speed = 1, className = '' })
         break;
     }
 
-    // Liquid Obsidian Glass with Physical Clearcoat
+    // Glass material — transmission + clearcoat for a vivid glass look
     const material = new THREE.MeshPhysicalMaterial({
-      color: 0x1c1c20,
-      metalness: 0.88,
-      roughness: 0.05,
+      color: 0x080808,         // near-black base so background shows through darkly
+      metalness: 0.0,
+      roughness: 0.0,
+      transmission: 0.18,      // slight translucency — adds depth without full transparency
+      ior: 1.72,               // glass-like refraction index
+      thickness: 1.2,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.025,
+      clearcoatRoughness: 0.0,
       reflectivity: 1.0,
-      envMapIntensity: 2.8,
+      envMapIntensity: 3.5,
+      specularIntensity: 1.0,
+      specularColor: new THREE.Color(0xffffff),
     });
 
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    // Dynamic Studio Lighting for specular pops
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x222226, 1.4);
+    // Multi-point glass studio lighting
+    // Very low ambient so the glass body stays dark
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x000000, 0.06);
     scene.add(hemiLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
-    keyLight.position.set(5, 7, 5);
+    // Main key — sharp top highlight
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.5);
+    keyLight.position.set(2, 9, 5);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0xffffff, 2.4);
-    rimLight.position.set(-6, -3, 3);
-    scene.add(rimLight);
+    // Left rim — produces left-side strip reflection
+    const rimLeft = new THREE.DirectionalLight(0xdde8ff, 1.8);
+    rimLeft.position.set(-7, 3, 2);
+    scene.add(rimLeft);
 
-    const topFill = new THREE.DirectionalLight(0xffffff, 1.8);
-    topFill.position.set(0, 8, -2);
-    scene.add(topFill);
+    // Right rim
+    const rimRight = new THREE.DirectionalLight(0xffffff, 1.2);
+    rimRight.position.set(7, 1, -2);
+    scene.add(rimRight);
+
+    // Underside fill — adds the faint bottom glow glass shows
+    const fillBot = new THREE.DirectionalLight(0xaabbdd, 0.5);
+    fillBot.position.set(0, -6, 3);
+    scene.add(fillBot);
 
     // Mouse parallax tracking
     let targetMouseX = 0;

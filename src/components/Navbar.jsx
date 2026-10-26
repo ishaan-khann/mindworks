@@ -24,7 +24,7 @@ export default function Navbar() {
     <header className="header-fixed">
       <nav aria-label="Primary" className={`nav-pill ${scrolled ? 'scrolled' : ''}`}>
         <a href="#top" className="brand-logo">
-          MindWorks
+          <span className="logo-text">MINDWORKS</span>
         </a>
 
         {/* Desktop Navigation */}

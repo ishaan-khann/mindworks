@@ -69,16 +69,18 @@ const PROCESS_STEPS = [
 ];
 
 const TECHNOLOGIES = [
-  'React',
-  'Next.js',
-  'Node.js',
-  'Supabase',
-  'Firebase',
-  'OpenAI',
-  'Anthropic',
-  'Stripe',
-  'Tailwind',
-  'Three.js',
+  { name: 'React',      slug: 'react',      color: '#61DAFB' },
+  { name: 'Next.js',   slug: 'nextdotjs',  color: '#ffffff' },
+  { name: 'Node.js',   slug: 'nodedotjs',  color: '#5FA04E' },
+  { name: 'Supabase',  slug: 'supabase',   color: '#3FCF8E' },
+  { name: 'Firebase',  slug: 'firebase',   color: '#DD2C00' },
+  { name: 'OpenAI',    slug: 'openai',     color: '#ffffff' },
+  { name: 'Anthropic', slug: 'anthropic',  color: '#ffffff' },
+  { name: 'Stripe',    slug: 'stripe',     color: '#635BFF' },
+  { name: 'Tailwind',  slug: 'tailwindcss',color: '#06B6D4' },
+  { name: 'Three.js',  slug: 'threedotjs', color: '#ffffff' },
+  { name: 'TypeScript',slug: 'typescript', color: '#3178C6' },
+  { name: 'Python',    slug: 'python',     color: '#3776AB' },
 ];
 
 export default function App() {
@@ -100,6 +102,23 @@ export default function App() {
             paddingBottom: '1.5rem',
           }}
         >
+          {/* White glow behind hero knot */}
+          <div
+            style={{
+              position: 'absolute',
+              right: '-2%',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 'clamp(22rem, 44vw, 40rem)',
+              height: 'clamp(22rem, 44vw, 40rem)',
+              borderRadius: '50%',
+              background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)',
+              pointerEvents: 'none',
+              zIndex: 0,
+              filter: 'blur(18px)',
+            }}
+          />
+
           {/* 3D Floating Knot Sculpture in Hero */}
           <div
             style={{
@@ -116,6 +135,7 @@ export default function App() {
           >
             <Sculpture shape="knot" speed={1.1} />
           </div>
+
 
           <div className="site-container" style={{ position: 'relative', width: '100%', zIndex: 2 }}>
             <h1 className="display-xl" style={{ marginTop: '0', maxWidth: '54rem' }}>
@@ -366,35 +386,76 @@ export default function App() {
           </div>
         </section>
 
-        {/* MODERN TECHNOLOGY STACK */}
+        {/* MODERN TECHNOLOGY STACK — infinite marquee */}
         <section
           style={{
             borderTop: '1px solid var(--border)',
             paddingTop: '3.5rem',
             paddingBottom: '4rem',
+            overflow: 'hidden',
           }}
         >
           <div className="site-container">
-            <h2 style={{ fontSize: 'clamp(1.2rem, 2.2vw, 1.6rem)', letterSpacing: '-0.02em', fontWeight: 500 }}>
+            <h2 style={{ fontSize: 'clamp(1.2rem, 2.2vw, 1.6rem)', letterSpacing: '-0.02em', fontWeight: 500, textAlign: 'center' }}>
               BUILT WITH MODERN TECHNOLOGY.
             </h2>
+          </div>
 
-            <ul
+          {/* Marquee track */}
+          <div
+            style={{
+              marginTop: '2.25rem',
+              position: 'relative',
+              overflow: 'hidden',
+              maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+            }}
+          >
+            <div
               style={{
-                marginTop: '1.75rem',
                 display: 'flex',
-                flexWrap: 'wrap',
-                columnGap: '2rem',
-                rowGap: '1rem',
-                listStyle: 'none',
+                gap: '3rem',
+                animation: 'tech-marquee 28s linear infinite',
+                width: 'max-content',
               }}
             >
-              {TECHNOLOGIES.map((tech) => (
-                <li key={tech} className="tech-tag">
-                  {tech}
-                </li>
+              {/* Render list twice for seamless loop */}
+              {[...TECHNOLOGIES, ...TECHNOLOGIES].map((tech, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    flexShrink: 0,
+                    opacity: 0.75,
+                    transition: 'opacity 0.2s',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+                  onMouseLeave={e => e.currentTarget.style.opacity = '0.75'}
+                >
+                  <img
+                    src={`https://cdn.simpleicons.org/${tech.slug}/${tech.color.replace('#', '')}`}
+                    alt={tech.name}
+                    width={22}
+                    height={22}
+                    style={{ display: 'block', flexShrink: 0 }}
+                    loading="lazy"
+                  />
+                  <span
+                    style={{
+                      fontSize: '0.9rem',
+                      fontWeight: 500,
+                      color: 'var(--muted-foreground)',
+                      whiteSpace: 'nowrap',
+                      letterSpacing: '0.01em',
+                    }}
+                  >
+                    {tech.name}
+                  </span>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </section>
 
