@@ -589,9 +589,9 @@ export default function App() {
 
               <div style={{ marginTop: '0.75rem', display: 'flex', gap: '1.25rem' }}>
                 {[
-                  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/mindworksai/' },
-                  { label: 'Instagram', href: 'https://www.instagram.com/mindworks.ai/' },
-                  { label: 'X', href: 'https://x.com/mindworks_ai' },
+                  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/mindworksai/', icon: 'linkedin', color: '0A66C2' },
+                  { label: 'Instagram', href: 'https://www.instagram.com/mindworks.ai/', icon: 'instagram', color: 'E4405F' },
+                  { label: 'X', href: 'https://x.com/mindworks_ai', icon: 'x', color: 'FFFFFF' },
                 ].map((social) => (
                   <a
                     key={social.label}
@@ -599,6 +599,9 @@ export default function App() {
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
                       color: 'var(--muted-foreground)',
                       textDecoration: 'none',
                       transition: 'color 0.25s',
@@ -606,6 +609,15 @@ export default function App() {
                     onMouseOver={(e) => (e.currentTarget.style.color = 'var(--foreground)')}
                     onMouseOut={(e) => (e.currentTarget.style.color = 'var(--muted-foreground)')}
                   >
+                    <img
+                      src={`https://cdn.simpleicons.org/${social.icon}/${social.color}`}
+                      alt=""
+                      aria-hidden="true"
+                      width="16"
+                      height="16"
+                      loading="lazy"
+                      style={{ display: 'block', width: '1rem', height: '1rem' }}
+                    />
                     {social.label}
                   </a>
                 ))}
