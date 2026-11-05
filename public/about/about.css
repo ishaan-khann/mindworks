@@ -47,7 +47,7 @@ a {
   padding-right: 1.5rem;
 }
 
-/* Fixed Floating Header */
+/* Fixed Floating Header — identical to main site */
 .header-fixed {
   position: fixed;
   top: 0;
@@ -70,21 +70,43 @@ a {
   margin: 0 auto;
   border-radius: 9999px;
   padding: 0.625rem 1.25rem;
-  border: 1px solid var(--border-strong);
-  background-color: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
 }
 
+/* Always show border on sub-pages (no "transparent at top" needed) */
+.nav-pill.scrolled,
+.nav-pill.always-visible {
+  border-color: var(--border-strong);
+  background-color: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+}
+
+/* Brand logo: exact match to main site */
 .brand-logo {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 2.5rem;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: opacity 0.25s;
 }
 
 .brand-logo img {
-  height: 1.75rem;
-  width: auto;
-  object-fit: contain;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.45rem;
+}
+
+.brand-logo:hover {
+  opacity: 0.75;
 }
 
 .nav-links {
@@ -100,11 +122,13 @@ a {
   }
 }
 
+/* Exact font-size match to main site (0.8125rem) */
 .nav-links a {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.02em;
   color: var(--muted-foreground);
-  transition: color 0.2s ease;
+  text-decoration: none;
+  transition: color 0.25s;
 }
 
 .nav-links a:hover,
@@ -113,7 +137,7 @@ a {
 }
 
 .nav-cta-btn {
-  display: inline-flex;
+  display: none;
   align-items: center;
   gap: 0.5rem;
   border-radius: 9999px;
@@ -122,20 +146,102 @@ a {
   padding: 0.5rem 1rem;
   font-size: 0.78rem;
   font-weight: 500;
-  transition: opacity 0.2s, transform 0.2s;
+  text-decoration: none;
+  transition: all 0.25s;
+}
+
+@media (min-width: 640px) {
+  .nav-cta-btn {
+    display: inline-flex;
+  }
 }
 
 .nav-cta-btn:hover {
-  opacity: 0.88;
-  transform: translateY(-1px);
+  opacity: 0.85;
 }
 
 .nav-cta-btn .arrow {
-  transition: transform 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-cta-btn:hover .arrow {
   transform: translateX(3px);
+}
+
+/* Mobile Menu Button — identical to main site */
+.mobile-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  color: var(--foreground);
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-btn {
+    display: none;
+  }
+}
+
+.hamburger-line {
+  position: absolute;
+  left: 0;
+  width: 1rem;
+  height: 1px;
+  background-color: var(--foreground);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-dropdown {
+  max-width: 72rem;
+  margin: 0.5rem auto 0;
+  border-radius: 1.5rem;
+  border: 1px solid var(--border);
+  background-color: rgba(0, 0, 0, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 1.5rem;
+  pointer-events: auto;
+  animation: fadeInDown 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* btn-primary for mobile dropdown */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border-radius: 9999px;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.875rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.btn-primary .arrow {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary:hover .arrow {
+  transform: translateX(4px);
 }
 
 /* Typography Scale */
