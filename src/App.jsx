@@ -216,6 +216,29 @@ export default function App() {
             >
               MindWorks combines design, development and AI to build digital systems that are designed around how your business actually operates.
             </p>
+            <p
+              style={{
+                marginTop: '1.25rem',
+                maxWidth: '36rem',
+                fontSize: '0.875rem',
+                marginLeft: 'auto',
+              }}
+            >
+              <a
+                href="/about/"
+                style={{
+                  color: 'var(--foreground)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.375rem',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid var(--border-strong)',
+                  paddingBottom: '2px',
+                }}
+              >
+                About MindWorks AI & Leadership <span aria-hidden="true">→</span>
+              </a>
+            </p>
           </div>
         </section>
 
@@ -561,7 +584,7 @@ export default function App() {
                 {[
                   { l: 'Services', h: '#services' },
                   { l: 'Process', h: '#process' },
-                  { l: 'About', h: '#about' },
+                  { l: 'About', h: '/about/' },
                   { l: 'Contact', h: '#discovery' },
                 ].map((item) => (
                   <li key={item.l}>

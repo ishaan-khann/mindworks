@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const NAV_ITEMS = [
   { label: 'Services', href: '#services' },
   { label: 'Process', href: '#process' },
-  { label: 'About', href: '#about' },
+  { label: 'About', href: '/about/' },
 ];
 
 export default function Navbar() {
