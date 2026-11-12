@@ -38,6 +38,29 @@ a {
   text-decoration: none;
 }
 
+:root[data-theme="light"] {
+  color-scheme: light;
+  --background: #f7f7f5;
+  --foreground: #171719;
+  --muted-foreground: #616168;
+  --muted-darker: #7c7c82;
+  --border: rgba(23, 23, 25, 0.1);
+  --border-strong: rgba(23, 23, 25, 0.2);
+  --primary: #171719;
+  --primary-foreground: #ffffff;
+}
+
+:root[data-theme="light"] body {
+  background-color: var(--background) !important;
+}
+
+:root[data-theme="light"] .nav-pill.scrolled,
+:root[data-theme="light"] .nav-pill.always-visible,
+:root[data-theme="light"] .mobile-dropdown {
+  background-color: rgba(247, 247, 245, 0.94);
+  box-shadow: 0 10px 30px -10px rgba(23, 23, 25, 0.12);
+}
+
 /* Site Container matching main site */
 .site-container {
   max-width: 72rem; /* 1152px */

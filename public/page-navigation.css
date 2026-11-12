@@ -1,0 +1,51 @@
+html {
+  background: #000000;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
+  background: transparent;
+  color: var(--foreground, #f4f4f6);
+  cursor: pointer;
+  transition: background-color 0.25s, border-color 0.25s, transform 0.25s;
+}
+
+.theme-toggle-btn:hover {
+  transform: rotate(8deg);
+  background: rgba(127,127,127,0.12);
+}
+
+.theme-toggle-btn svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.page-navigation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #000000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 80ms linear;
+}
+
+.page-navigation-overlay.is-visible {
+  opacity: 1;
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Sculpture from './components/Sculpture';
 import DiscoveryForm from './components/DiscoveryForm';
@@ -89,9 +89,180 @@ const TECHNOLOGIES = [
   { name: 'Python',    slug: 'python',     color: '#3776AB' },
 ];
 
-export default function App() {
+const WORKFLOW_STAGES = [
+  {
+    label: 'CAPTURE',
+    title: 'Business input',
+    detail: 'Forms, email, documents and CRM events enter one controlled queue.',
+    metric: '01',
+    signal: '12 events',
+    tool: 'INPUTS',
+    x: 70,
+    y: 132,
+  },
+  {
+    label: 'UNDERSTAND',
+    title: 'Agent reasoning',
+    detail: 'The AI reads the request, checks context and classifies the next best action.',
+    metric: '02',
+    signal: '94% confidence',
+    tool: 'REASON',
+    x: 260,
+    y: 78,
+  },
+  {
+    label: 'CONNECT',
+    title: 'Tool execution',
+    detail: 'Approved tools update records, notify teams and prepare responses.',
+    metric: '03',
+    signal: '3 tools ready',
+    tool: 'ACTIONS',
+    x: 450,
+    y: 130,
+  },
+  {
+    label: 'ACT',
+    title: 'Verified outcome',
+    detail: 'The result is validated, logged and handed to a person when needed.',
+    metric: '04',
+    signal: 'Human-ready',
+    tool: 'OUTPUT',
+    x: 640,
+    y: 66,
+  },
+];
+
+function WorkflowDemo() {
+  const [activeStage, setActiveStage] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveStage((current) => (current + 1) % WORKFLOW_STAGES.length);
+    }, 3200);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const active = WORKFLOW_STAGES[activeStage];
+
   return (
-    <div id="top" style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#000000' }}>
+    <section className="workflow-demo-section" aria-labelledby="workflow-demo-heading">
+      <div className="workflow-demo-grid">
+        <div className="workflow-demo-copy">
+          <p className="eyebrow">AI workflows</p>
+          <h2 id="workflow-demo-heading" className="workflow-demo-heading">
+            Automate the work.<br />Keep the control.
+          </h2>
+          <p className="workflow-demo-lede">
+            AI agents turn repetitive business tasks into dependable, reviewable workflows that connect your people, tools and data.
+          </p>
+        </div>
+
+        <div className="workflow-console">
+          <div className="workflow-console-top">
+            <div>
+              <span className="workflow-console-kicker">MINDWORKS / OPERATIONS</span>
+              <strong>Agent execution map</strong>
+            </div>
+            <div className="workflow-live"><span /> LIVE RUN</div>
+          </div>
+
+          <div className="workflow-path" aria-live="polite">
+            <svg viewBox="0 0 700 230" role="img" aria-label={`Workflow stage: ${active.title}`}>
+              <defs>
+                <linearGradient id="workflowLine" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.12" />
+                  <stop offset="55%" stopColor="#ffffff" />
+                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.35" />
+                </linearGradient>
+              </defs>
+              {[0, 1, 2, 3, 4, 5].map((line) => (
+                <line key={`h-${line}`} className="workflow-grid-line" x1="30" x2="670" y1={30 + line * 38} y2={30 + line * 38} />
+              ))}
+              {[0, 1, 2, 3, 4, 5, 6].map((line) => (
+                <line key={`v-${line}`} className="workflow-grid-line" y1="24" y2="206" x1={32 + line * 106} x2={32 + line * 106} />
+              ))}
+              <path className="workflow-path-base" d="M70 132 C145 132,160 78,260 78 C350 78,350 130,450 130 C540 130,545 66,640 66" />
+              <path
+                className="workflow-path-active"
+                key={activeStage}
+                d={
+                  activeStage === 0
+                    ? 'M70 132 C145 132,160 78,260 78'
+                    : activeStage === 1
+                      ? 'M70 132 C145 132,160 78,260 78 C350 78,350 130,450 130'
+                      : 'M70 132 C145 132,160 78,260 78 C350 78,350 130,450 130 C540 130,545 66,640 66'
+                }
+              />
+              {WORKFLOW_STAGES.map((stage, index) => (
+                <g key={stage.label} className={`workflow-node-group ${index <= activeStage ? 'is-active' : ''}`}>
+                  {index === activeStage && <circle className="workflow-node-pulse" cx={stage.x} cy={stage.y} r="17" />}
+                  <circle className="workflow-node-ring" cx={stage.x} cy={stage.y} r="10" />
+                  <circle className="workflow-node-core" cx={stage.x} cy={stage.y} r="4" />
+                  <text className="workflow-node-label" x={stage.x} y={stage.y + 34} textAnchor="middle">{stage.tool}</text>
+                </g>
+              ))}
+            </svg>
+
+            <div className="workflow-stage-card" key={activeStage}>
+              <div className="workflow-stage-meta">
+                <span>STEP {active.metric}</span>
+                <strong>{active.label}</strong>
+              </div>
+              <div className="workflow-stage-copy">
+                <strong>{active.title}</strong>
+                <small>{active.detail}</small>
+              </div>
+              <div className="workflow-stage-signal"><span />{active.signal}</div>
+            </div>
+          </div>
+
+          <div className="workflow-tabs" role="tablist" aria-label="AI workflow stages">
+            {WORKFLOW_STAGES.map((stage, index) => (
+              <button
+                key={stage.label}
+                type="button"
+                role="tab"
+                aria-selected={index === activeStage}
+                className={index === activeStage ? 'is-active' : ''}
+                onClick={() => setActiveStage(index)}
+              >
+                <span>0{index + 1}</span>
+                {stage.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function App() {
+  useEffect(() => {
+    const scrollToHash = () => {
+      const hash = window.location.hash;
+      if (!hash) return;
+
+      const target = document.querySelector(hash);
+      if (!target) return;
+
+      window.requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    };
+
+    const timer = window.setTimeout(scrollToHash, 150);
+    window.addEventListener('hashchange', scrollToHash);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('hashchange', scrollToHash);
+    };
+  }, []);
+
+  return (
+    <div id="top" style={{ position: 'relative', minHeight: '100vh', backgroundColor: 'var(--background)' }}>
       {/* Fixed Navbar */}
       <Navbar />
 
@@ -241,6 +412,9 @@ export default function App() {
             </p>
           </div>
         </section>
+
+        {/* INTERACTIVE AI WORKFLOW DEMO */}
+        <WorkflowDemo />
 
         {/* SERVICES SECTION */}
         <section

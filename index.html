@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,13 +23,28 @@
     <meta name="twitter:description" content="AI workflows, agents and chatbots, strategic web design, and custom web applications built around how your business works." />
     <meta name="twitter:image" content="https://mindworksai.in/logo.png" />
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/logo.png" />
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.ico" sizes="256x256" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/apple-touch-icon.png" />
     
     <!-- Google Fonts: Geist font family -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/page-navigation.css" />
+    <script src="/page-navigation.js" defer></script>
+    <script>
+      (() => {
+        const saved = localStorage.getItem('mindworks-theme');
+        const theme = saved === 'dark' ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.classList.toggle('light', theme === 'light');
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
     
     <script type="application/ld+json">
       {

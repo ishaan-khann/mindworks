@@ -7,8 +7,22 @@
     <meta name="description" content="Build useful AI agents and chatbots for customer support, lead qualification, and internal knowledge workflows, with clear boundaries and human handoff." />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://mindworksai.in/services/ai-agents-chatbots/" />
-    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="icon" href="/favicon.ico" sizes="256x256" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/apple-touch-icon.png" />
+    <script>
+      (() => {
+        const theme = localStorage.getItem('mindworks-theme') === 'dark' ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle('light', theme === 'light');
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
     <link rel="stylesheet" href="/services/service-pages.css" />
+    <link rel="stylesheet" href="/page-navigation.css" />
+    <script src="/page-navigation.js" defer></script>
     <meta property="og:type" content="website" /><meta property="og:site_name" content="MindWorks AI" /><meta property="og:title" content="AI Agents &amp; Chatbots for Business | MindWorks AI" /><meta property="og:description" content="AI assistants with useful integrations, clear boundaries, and human handoff." /><meta property="og:url" content="https://mindworksai.in/services/ai-agents-chatbots/" /><meta property="og:image" content="https://mindworksai.in/logo.png" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Service","name":"Business AI Agents and Chatbots","serviceType":"AI agent and chatbot design and development","provider":{"@type":"Organization","name":"MindWorks AI","url":"https://mindworksai.in/"},"url":"https://mindworksai.in/services/ai-agents-chatbots/","description":"Design and development of AI assistants for customer support, lead qualification, and internal knowledge workflows with defined boundaries and human handoff."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mindworksai.in/"},{"@type":"ListItem","position":2,"name":"AI Agents & Chatbots","item":"https://mindworksai.in/services/ai-agents-chatbots/"}]}]}</script>
   </head>

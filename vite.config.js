@@ -10,6 +10,14 @@ function discoveryApiPlugin() {
     configureServer(server) {
       const dataDir = path.resolve(import.meta.dirname || process.cwd(), 'data');
       const dataFile = path.resolve(dataDir, 'discovery_submissions.json');
+      const staticRoutes = new Map([
+        ['/services/', path.resolve(process.cwd(), 'public/services/index.html')],
+        ['/about/', path.resolve(process.cwd(), 'public/about/index.html')],
+        ['/services/ai-workflow-automation/', path.resolve(process.cwd(), 'public/services/ai-workflow-automation/index.html')],
+        ['/services/ai-agents-chatbots/', path.resolve(process.cwd(), 'public/services/ai-agents-chatbots/index.html')],
+        ['/services/web-design/', path.resolve(process.cwd(), 'public/services/web-design/index.html')],
+        ['/services/web-development/', path.resolve(process.cwd(), 'public/services/web-development/index.html')],
+      ]);
 
       if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir, { recursive: true });
@@ -17,6 +25,28 @@ function discoveryApiPlugin() {
       if (!fs.existsSync(dataFile)) {
         fs.writeFileSync(dataFile, JSON.stringify([], null, 2), 'utf8');
       }
+
+      server.middlewares.use((req, res, next) => {
+        const pathname = (req.url || '/').split('?')[0];
+        const trailingSlashRoute = staticRoutes.has(`${pathname}/`);
+
+        if (!pathname.endsWith('/') && trailingSlashRoute) {
+          res.statusCode = 308;
+          res.setHeader('Location', `${pathname}/`);
+          res.end();
+          return;
+        }
+
+        const staticFile = staticRoutes.get(pathname);
+        if (staticFile && fs.existsSync(staticFile)) {
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'text/html; charset=utf-8');
+          res.end(fs.readFileSync(staticFile));
+          return;
+        }
+
+        next();
+      });
 
       server.middlewares.use('/api/discovery', (req, res, next) => {
         if (req.method === 'POST') {

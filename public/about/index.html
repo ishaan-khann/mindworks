@@ -9,8 +9,21 @@
     <meta name="author" content="Ishaan Khan, MindWorks AI" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://mindworksai.in/about/" />
-    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="icon" href="/favicon.ico" sizes="256x256" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/apple-touch-icon.png" />
+    <script>
+      (() => {
+        const theme = localStorage.getItem('mindworks-theme') === 'dark' ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle('light', theme === 'light');
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
     <link rel="stylesheet" href="/about/about.css" />
+    <link rel="stylesheet" href="/page-navigation.css" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -327,6 +340,7 @@
       </div>
     </footer>
 
+    <script src="/page-navigation.js" defer></script>
     <script>
       // --- Scroll-based nav pill (identical to main site React logic) ---
       const navPill = document.getElementById('nav-pill');

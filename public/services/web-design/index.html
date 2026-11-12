@@ -7,8 +7,22 @@
     <meta name="description" content="MindWorks AI designs responsive business websites with clear messaging, accessible interfaces, fast performance, and conversion-focused journeys." />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://mindworksai.in/services/web-design/" />
-    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="icon" href="/favicon.ico" sizes="256x256" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/apple-touch-icon.png" />
+    <script>
+      (() => {
+        const theme = localStorage.getItem('mindworks-theme') === 'dark' ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle('light', theme === 'light');
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
     <link rel="stylesheet" href="/services/service-pages.css" />
+    <link rel="stylesheet" href="/page-navigation.css" />
+    <script src="/page-navigation.js" defer></script>
     <meta property="og:type" content="website" /><meta property="og:site_name" content="MindWorks AI" /><meta property="og:title" content="Web Design Agency for Business Websites | MindWorks AI" /><meta property="og:description" content="Responsive business websites built around clear messaging, usability, and measurable goals." /><meta property="og:url" content="https://mindworksai.in/services/web-design/" /><meta property="og:image" content="https://mindworksai.in/logo.png" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Service","name":"Business Web Design","serviceType":"Web design and website development","provider":{"@type":"Organization","name":"MindWorks AI","url":"https://mindworksai.in/"},"url":"https://mindworksai.in/services/web-design/","description":"Design and development of responsive business websites focused on clear messaging, accessibility, performance, and user journeys."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mindworksai.in/"},{"@type":"ListItem","position":2,"name":"Web Design","item":"https://mindworksai.in/services/web-design/"}]}]}</script>
   </head>
